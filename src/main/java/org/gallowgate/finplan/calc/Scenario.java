@@ -7,6 +7,7 @@ public class Scenario {
     public Scenario() {
         Aggregator aggregator = new Aggregator();
         aggregator.addEvent(new Event("Pension", 228000, LocalDate.of(2023, 12, 1), Investment.SP500));
+        aggregator.addEvent(new Event("ISA", 169000, LocalDate.of(2023, 12, 1), Investment.GROWTH));
         aggregator.aggregate();
     }
 }

@@ -13,15 +13,12 @@ public class Aggregator {
     }
 
     public void aggregate() {
-        for (Event e : events) {
-            LocalDate date = e.getDate();
-            Double amount = e.getAmount();
-            Float rate = e.getInvestmentRate();
-            for (int year = 0; year < 30; year++) {
-                System.out.println("Date %s, amount £%.2f".formatted(date, amount));
-                date = date.plusYears(1);
-                amount = amount * (1 + rate);
+        Results results = new Results(events);
+        while (!results.isDone()) {
+            for (Double d : results.getNextRow(35000)) {
+                System.out.print(String.format("%.2f ", d));
             }
+            System.out.println();
         }
     }
 
@@ -31,5 +28,16 @@ public class Aggregator {
 
     public List<Event> getEvents() {
         return events;
+    }
+
+    private LocalDate getEarliestDate() {
+        LocalDate earliest = events.get(0).getDate();
+
+        for (Event e : events) {
+            if (e.getDate().isBefore(earliest)) {
+                earliest = e.getDate();
+            }
+        }
+        return earliest;
     }
 }
