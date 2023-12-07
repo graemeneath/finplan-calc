@@ -14,11 +14,14 @@ public class Aggregator {
 
     public void aggregate() {
         Results results = new Results(events);
+        List<String> headers = results.getHeaders();
+        System.out.println(String.join("," ,headers));
         while (!results.isDone()) {
-            for (Double d : results.getNextRow(35000)) {
-                System.out.print(String.format("%.2f ", d));
-            }
-            System.out.println();
+            LocalDate currentDate = results.getCurrentDate();
+            List<String> row = results.getNextRow(getWithdrawalAmount(currentDate)).stream().map(d -> String.format("%.2f", d)).toList();
+            List<String> mutableRow = new ArrayList<>(row);
+            mutableRow.add(0, currentDate.toString());
+            System.out.println(String.join(",", mutableRow));
         }
     }
 
@@ -30,14 +33,9 @@ public class Aggregator {
         return events;
     }
 
-    private LocalDate getEarliestDate() {
-        LocalDate earliest = events.get(0).getDate();
-
-        for (Event e : events) {
-            if (e.getDate().isBefore(earliest)) {
-                earliest = e.getDate();
-            }
-        }
-        return earliest;
+    private double getWithdrawalAmount(LocalDate currentDate) {
+        // this value will change dependent on age
+        return 35000;
     }
+
 }

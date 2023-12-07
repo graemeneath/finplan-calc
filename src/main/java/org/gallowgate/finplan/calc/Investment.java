@@ -1,6 +1,7 @@
 package org.gallowgate.finplan.calc;
 
 public enum Investment {
+    SINGLE(-1f),
     CASH(-0.02f),
     SAVINGS(0f),
     FLAT(0f),
