@@ -19,14 +19,15 @@ public class Results {
     public List<Double> getNextRow(double withdrawal) {
         List<Double> result = new ArrayList<>();
         for (Event event : events) {
-            if (event.isActive(currentDate)) {
-                withdrawal = event.decreaseCurrentAmount(withdrawal);
-                result.add(event.getCurrentAmount());
-                event.applyInvestment();
-            } else {
-                result.add(0.0);
+            if (event.getEventType() == EventType.INVESTMENT) {
+                if (event.isActive(currentDate)) {
+                    withdrawal = event.decreaseCurrentAmount(withdrawal);
+                    result.add(event.getCurrentAmount());
+                    event.applyInvestment();
+                } else {
+                    result.add(0.0);
+                }
             }
-
         }
 
         currentRow += 1;
@@ -66,21 +67,34 @@ public class Results {
     }
 
     private LocalDate getEarliestDate() {
-        LocalDate earliest = events.get(0).getDate();
+        LocalDate earliest = events.get(0).getStartDate();
 
         for (Event e : events) {
-            if (e.getDate().isBefore(earliest)) {
-                earliest = e.getDate();
+            if (e.getStartDate().isBefore(earliest) && e.getEventType() == EventType.INVESTMENT) {
+                earliest = e.getStartDate();
             }
         }
         return earliest.withDayOfYear(1);
+    }
+
+    private LocalDate getLatestDate() {
+        LocalDate latest = events.get(0).getEndDate();
+
+        for (Event e : events) {
+            if (e.getEndDate().isAfter(latest) && e.getEventType() == EventType.INVESTMENT) {
+                latest = e.getEndDate();
+            }
+        }
+        return latest.withDayOfYear(1);
     }
 
     public List<String> getHeaders() {
         List<String> headers = new ArrayList<>();
         headers.add("Date");
         for (Event e : events) {
-            headers.add(e.getName());
+            if (e.getEventType() == EventType.INVESTMENT) {
+                headers.add(e.getName());
+            }
         }
         return headers;
     }

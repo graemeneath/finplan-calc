@@ -1,6 +1,6 @@
 package org.gallowgate.finplan.calc;
 
-public enum Investment {
+public enum InvestmentType {
     SINGLE(-1f),
     CASH(-0.02f),
     SAVINGS(0f),
@@ -10,7 +10,7 @@ public enum Investment {
 
     public final float rate;
 
-    private Investment(float rate) {
+    private InvestmentType(float rate) {
         this.rate = rate;
     }
 }

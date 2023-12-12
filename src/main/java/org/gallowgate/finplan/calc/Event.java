@@ -6,21 +6,29 @@ public class Event {
     private final String name;
     private final double amount;
     private double currentAmount;
-    private final LocalDate date;
-    private final Investment investment;
+    private final LocalDate startDate;
+    private final LocalDate endDate;
+    private final EventType eventType;
+    private final InvestmentType investment;
 
     // constructor
-    public Event(String name, double amount, LocalDate date, Investment investment) {
+    public Event(String name, double amount, LocalDate startDate, LocalDate endDate, EventType eventType, InvestmentType investment) {
         this.name = name;
         this.amount = amount;
-        this.date = date;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.eventType = eventType;
         this.investment = investment;
 
         reset();
     }
 
-    public LocalDate getDate() {
-        return date;
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
     }
 
     public String getName() {
@@ -29,6 +37,10 @@ public class Event {
 
     public double getAmount() {
         return amount;
+    }
+
+    public EventType getEventType() {
+        return eventType;
     }
 
     public float getInvestmentRate() {
@@ -62,6 +74,6 @@ public class Event {
     }
 
     public boolean isActive(LocalDate date) {
-        return (date.getYear() >= this.date.getYear());
+        return (date.getYear() >= this.startDate.getYear());
     }
 }

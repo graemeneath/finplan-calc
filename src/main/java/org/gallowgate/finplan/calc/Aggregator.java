@@ -34,8 +34,23 @@ public class Aggregator {
     }
 
     private double getWithdrawalAmount(LocalDate currentDate) {
+        // get sum of costs for this period
+        double costs = 0;
+
+        for (Event e : events) {
+            if (e.getEventType() == EventType.COST
+            && e.getStartDate().getYear() <= currentDate.getYear()
+            && e.getEndDate().getYear() >= currentDate.getYear()) {
+                costs += e.getAmount();
+            }
+        }
+
         // this value will change dependent on age
-        return 35000;
+        double baseWithdrawal = 30000;
+
+        double totalWithdrawal = baseWithdrawal + costs;
+        System.out.println("Total withdrawal: " + totalWithdrawal);
+        return totalWithdrawal;
     }
 
 }
