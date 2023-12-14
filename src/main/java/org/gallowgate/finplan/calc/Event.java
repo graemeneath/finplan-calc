@@ -56,6 +56,7 @@ public class Event {
 
     public Event setAmount(double amount) {
         this.amount = amount;
+        currentAmount = amount;
         return this;
     }
 
@@ -70,6 +71,10 @@ public class Event {
 
     public float getInvestmentRate() {
         return investment.rate;
+    }
+
+    public InvestmentType getInvestment() {
+        return investment;
     }
 
     public Event setInvestment(InvestmentType investment) {
@@ -103,6 +108,7 @@ public class Event {
         currentAmount = Math.round(currentAmount * 100) / 100.0; // round to 2 decimal places
     }
 
+    // this calculation engine works on a yearly basis, so we need to check if the date is within the event's year
     public boolean isActive(LocalDate date) {
         return (
                 date.getYear() >= this.startDate.getYear() && date.getYear() <= this.endDate.getYear()
