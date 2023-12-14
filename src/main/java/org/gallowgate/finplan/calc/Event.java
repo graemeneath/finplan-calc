@@ -3,22 +3,22 @@ package org.gallowgate.finplan.calc;
 import java.time.LocalDate;
 
 public class Event {
-    private final String name;
-    private final double amount;
+    private String name;
+    private double amount;
     private double currentAmount;
-    private final LocalDate startDate;
-    private final LocalDate endDate;
-    private final EventType eventType;
-    private final InvestmentType investment;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private EventType eventType;
+    private InvestmentType investment;
 
     // constructor
-    public Event(String name, double amount, LocalDate startDate, LocalDate endDate, EventType eventType, InvestmentType investment) {
-        this.name = name;
-        this.amount = amount;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.eventType = eventType;
-        this.investment = investment;
+    public Event() {
+        this.name = "event";
+        this.amount = 0;
+        this.startDate = LocalDate.of(1900, 1, 1);
+        this.endDate = LocalDate.of(2099,1,1);
+        this.eventType = EventType.INVESTMENT;
+        this.investment = InvestmentType.CASH;
 
         reset();
     }
@@ -27,24 +27,54 @@ public class Event {
         return startDate;
     }
 
+    public Event setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+        return this;
+    }
+
     public LocalDate getEndDate() {
         return endDate;
+    }
+
+    public Event setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+        return this;
     }
 
     public String getName() {
         return name;
     }
 
+    public Event setName(String name) {
+        this.name = name;
+        return this;
+    }
+
     public double getAmount() {
         return amount;
+    }
+
+    public Event setAmount(double amount) {
+        this.amount = amount;
+        return this;
     }
 
     public EventType getEventType() {
         return eventType;
     }
 
+    public Event setEventType(EventType eventType) {
+        this.eventType = eventType;
+        return this;
+    }
+
     public float getInvestmentRate() {
         return investment.rate;
+    }
+
+    public Event setInvestment(InvestmentType investment) {
+        this.investment = investment;
+        return this;
     }
 
     public void reset() {
@@ -74,6 +104,8 @@ public class Event {
     }
 
     public boolean isActive(LocalDate date) {
-        return (date.getYear() >= this.startDate.getYear());
+        return (
+                date.getYear() >= this.startDate.getYear() && date.getYear() <= this.endDate.getYear()
+        );
     }
 }

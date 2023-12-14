@@ -9,13 +9,43 @@ public class Scenario {
 
     public void run() {
         Aggregator aggregator = new Aggregator();
-        aggregator.addEvent(new Event("ISA", 169000, LocalDate.of(2023, 12, 1), null, EventType.INVESTMENT, InvestmentType.GROWTH));
-        aggregator.addEvent(new Event("Inheritance", 150000, LocalDate.of(2035, 1, 1), null, EventType.INVESTMENT, InvestmentType.GROWTH));
-        aggregator.addEvent(new Event("Cash", 60000, LocalDate.of(2023, 11, 1), null, EventType.INVESTMENT, InvestmentType.CASH));
-        aggregator.addEvent(new Event("Pension", 228000, LocalDate.of(2023, 12, 1), null, EventType.INVESTMENT, InvestmentType.SP500));
+        aggregator.addEvent(new Event()
+                .setName("ISA")
+                .setAmount(171000)
+                .setStartDate(LocalDate.of(2023, 12, 1))
+                .setEventType(EventType.INVESTMENT)
+                .setInvestment(InvestmentType.GROWTH)
+        );
+        aggregator.addEvent(new Event()
+                .setName("Inheritance")
+                .setAmount(150000)
+                .setStartDate(LocalDate.of(2035, 1, 1))
+                .setEventType(EventType.INVESTMENT)
+                .setInvestment(InvestmentType.GROWTH)
+        );
+        aggregator.addEvent(new Event()
+                .setName("Cash")
+                .setAmount(60000)
+                .setStartDate(LocalDate.of(2023, 11, 1))
+                .setEventType(EventType.INVESTMENT)
+                .setInvestment(InvestmentType.CASH)
+        );
+        aggregator.addEvent(new Event()
+                .setName("Pension")
+                .setAmount(232000)
+                .setStartDate(LocalDate.of(2023, 12, 1))
+                .setEventType(EventType.INVESTMENT)
+                .setInvestment(InvestmentType.SP500)
+        );
 
-        aggregator.addEvent(new Event("Mortgage", 12000, LocalDate.of(2023,11,1), LocalDate.of(2032, 9, 1), EventType.COST, InvestmentType.FLAT));
-
+        aggregator.addEvent(new Event()
+                .setName("Mortgage")
+                .setAmount(10000)
+                .setStartDate(LocalDate.of(2023, 1, 1))
+                .setEndDate(LocalDate.of(2032,9,1))
+                .setEventType(EventType.COST)
+                .setInvestment(InvestmentType.FLAT)
+        );
         aggregator.aggregate();
     }
 }
