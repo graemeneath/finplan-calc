@@ -5,28 +5,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Results {
-    private final List<Event> events;
+    private final Events events;
     private int currentRow = 0;
     private LocalDate currentDate = null;
     private int maxRows = 30;
 
     // constructor
-    public Results(List<Event> events) {
+    public Results(Events events) {
         this.events = events;
         reset();
     }
 
     public List<Double> getNextRow(double withdrawal) {
         List<Double> result = new ArrayList<>();
-        for (Event event : events) {
-            if (event.getEventType() == EventType.INVESTMENT) {
-                if (event.isActive(currentDate)) {
-                    withdrawal = event.decreaseCurrentAmount(withdrawal);
-                    result.add(event.getCurrentAmount());
-                    event.applyInvestment();
-                } else {
-                    result.add(0.0);
-                }
+        for (Event event : events.getEvents(EventType.INVESTMENT)) {
+            if (event.isActive(currentDate)) {
+                withdrawal = event.decreaseCurrentAmount(withdrawal);
+                result.add(event.getCurrentAmount());
+                event.applyInvestment();
+            } else {
+                result.add(0.0);
             }
         }
 
@@ -40,7 +38,7 @@ public class Results {
             return true;
         }
 
-        for (Event event : events) {
+        for (Event event : events.getEvents()) {
             if (event.getCurrentAmount() > 0) {
                 return false;
             }
@@ -58,44 +56,11 @@ public class Results {
     }
 
     private void reset() {
-        for (Event event : events) {
+        for (Event event : events.getEvents()) {
             event.reset();
         }
 
         currentRow = 0;
-        currentDate = getEarliestDate();
-    }
-
-    private LocalDate getEarliestDate() {
-        LocalDate earliest = events.get(0).getStartDate();
-
-        for (Event e : events) {
-            if (e.getStartDate().isBefore(earliest) && e.getEventType() == EventType.INVESTMENT) {
-                earliest = e.getStartDate();
-            }
-        }
-        return earliest.withDayOfYear(1);
-    }
-
-    private LocalDate getLatestDate() {
-        LocalDate latest = events.get(0).getEndDate();
-
-        for (Event e : events) {
-            if (e.getEndDate().isAfter(latest) && e.getEventType() == EventType.INVESTMENT) {
-                latest = e.getEndDate();
-            }
-        }
-        return latest.withDayOfYear(1);
-    }
-
-    public List<String> getHeaders() {
-        List<String> headers = new ArrayList<>();
-        headers.add("Date");
-        for (Event e : events) {
-            if (e.getEventType() == EventType.INVESTMENT) {
-                headers.add(e.getName());
-            }
-        }
-        return headers;
+        currentDate = events.getEarliestDate();
     }
 }

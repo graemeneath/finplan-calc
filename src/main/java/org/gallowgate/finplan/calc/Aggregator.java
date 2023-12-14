@@ -5,16 +5,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Aggregator {
-    List<Event> events;
+    private final Events events = new Events();
 
     //constructor
     public Aggregator() {
-        events = new ArrayList<Event>();
     }
 
     public void aggregate() {
         Results results = new Results(events);
-        List<String> headers = results.getHeaders();
+        List<String> headers = events.getHeaders();
         System.out.println(String.join("," ,headers));
         while (!results.isDone()) {
             LocalDate currentDate = results.getCurrentDate();
@@ -26,21 +25,15 @@ public class Aggregator {
     }
 
     public void addEvent(Event e) {
-        events.add(e);
-    }
-
-    public List<Event> getEvents() {
-        return events;
+        events.addEvent(e);
     }
 
     private double getWithdrawalAmount(LocalDate currentDate) {
         // get sum of costs for this period
         double costs = 0;
 
-        for (Event e : events) {
-            if (e.getEventType() == EventType.COST
-            && e.getStartDate().getYear() <= currentDate.getYear()
-            && e.getEndDate().getYear() >= currentDate.getYear()) {
+        for (Event e : events.getEvents()) {
+            if (e.getEventType() == EventType.COST && e.isActive(currentDate)) {
                 costs += e.getAmount();
             }
         }
@@ -49,7 +42,7 @@ public class Aggregator {
         double baseWithdrawal = 30000;
 
         double totalWithdrawal = baseWithdrawal + costs;
-        System.out.println("Total withdrawal: " + totalWithdrawal);
+        //System.out.println("Total withdrawal: " + totalWithdrawal);
         return totalWithdrawal;
     }
 
