@@ -3,9 +3,11 @@ package org.gallowgate.finplan.calc;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class Aggregator {
     private final Events events = new Events();
+    private Logger logger = Logger.getLogger(Aggregator.class.getName());
 
     //constructor
     public Aggregator() {
@@ -42,7 +44,7 @@ public class Aggregator {
         double baseWithdrawal = 30000;
 
         double totalWithdrawal = baseWithdrawal + costs;
-        //System.out.println("Total withdrawal: " + totalWithdrawal);
+        logger.info("Total withdrawal: " + totalWithdrawal);
         return totalWithdrawal;
     }
 
