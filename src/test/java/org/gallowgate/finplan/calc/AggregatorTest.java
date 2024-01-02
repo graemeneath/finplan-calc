@@ -1,15 +1,16 @@
 package org.gallowgate.finplan.calc;
 
+import org.junit.Test;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Scenario {
-    // constructor
-    public Scenario() {
-    }
+import static org.junit.Assert.assertEquals;
 
-    public void run() {
+public class AggregatorTest {
+
+    private Aggregator testSetup1() {
         Aggregator aggregator = new Aggregator();
         aggregator.addEvent(new Event()
                 .setName("ISA")
@@ -49,13 +50,15 @@ public class Scenario {
                 .setInvestment(InvestmentType.FLAT)
         );
 
-        displayResults(aggregator);
+        return aggregator;
     }
 
-    private void displayResults(Aggregator aggregator) {
+    @Test
+    public void expectedResultDimensions() {
+        Aggregator aggregator = testSetup1();
         List<ArrayList<String>> rows = aggregator.aggregate();
-        for (ArrayList<String> row : rows) {
-            System.out.println(row);
-        }
+
+        assertEquals(31, rows.size());
+        assertEquals(5, rows.get(0).size());
     }
 }
