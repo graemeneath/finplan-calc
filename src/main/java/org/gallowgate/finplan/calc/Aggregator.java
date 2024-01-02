@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 
 public class Aggregator {
     private final Events events = new Events();
-    private Logger logger = Logger.getLogger(Aggregator.class.getName());
+    private final Logger logger = Logger.getLogger(Aggregator.class.getName());
 
     //constructor
     public Aggregator() {
