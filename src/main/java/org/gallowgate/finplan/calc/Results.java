@@ -8,7 +8,6 @@ public class Results {
     private final Events events;
     private int currentRow = 0;
     private LocalDate currentDate = null;
-    private int maxRows = 30;
 
     // constructor
     public Results(Events events) {
@@ -34,10 +33,6 @@ public class Results {
     }
 
     public boolean isDone() {
-        if (currentRow >= maxRows) {
-            return true;
-        }
-
         for (Event event : events.getEvents()) {
             if (event.getCurrentAmount() > 0) {
                 return false;
@@ -50,12 +45,7 @@ public class Results {
         return currentDate;
     }
 
-    public void setMaxRows(int maxRows) {
-        this.maxRows = maxRows;
-        reset();
-    }
-
-    private void reset() {
+    public void reset() {
         for (Event event : events.getEvents()) {
             event.reset();
         }

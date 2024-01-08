@@ -9,6 +9,9 @@ import java.util.logging.Logger;
 
 public class Aggregator {
     private final Events events = new Events();
+    private Person person;
+    private int maxAge = 100;
+    private Withdrawal withdrawal;
     private final JSONObject result = new JSONObject();
     private final Logger logger = Logger.getLogger(Aggregator.class.getName());
 
@@ -33,6 +36,10 @@ public class Aggregator {
 
         while (!results.isDone()) {
             LocalDate currentDate = results.getCurrentDate();
+            if (person.getAge(currentDate) > maxAge) {
+                break;
+            }
+
             List<String> row = results.getNextRow(getWithdrawalAmount(currentDate)).stream().map(d -> String.format("%.2f", d)).toList();
 
             JSONArray jrow = new JSONArray();
@@ -52,6 +59,18 @@ public class Aggregator {
         events.addEvent(e);
     }
 
+    public void setPerson(Person p) {
+        person = p;
+    }
+
+    public void setMaxAge(int age) {
+        maxAge = age;
+    }
+
+    public void setWithdrawal(Withdrawal w) {
+        withdrawal = w;
+    }
+
     public JSONObject getResult() {
         return result;
     }
@@ -67,7 +86,8 @@ public class Aggregator {
         }
 
         // this value will change dependent on age
-        double baseWithdrawal = 30000;
+        int age = person.getAge(currentDate);
+        double baseWithdrawal = withdrawal.getAmount(age);
 
         double totalWithdrawal = baseWithdrawal + costs;
         logger.fine("Total withdrawal: " + totalWithdrawal);

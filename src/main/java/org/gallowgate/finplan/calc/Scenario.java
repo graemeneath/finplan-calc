@@ -11,6 +11,11 @@ public class Scenario {
 
     public void run() {
         Aggregator aggregator = new Aggregator();
+
+        aggregator.setPerson(Person.create("Graeme", LocalDate.of(1968, 11,2)));
+        aggregator.setMaxAge(90);
+        aggregator.setWithdrawal(new Withdrawal(30000).addOverride(75, 25000));
+
         aggregator.addEvent(new Event()
                 .setName("ISA")
                 .setAmount(171000)
