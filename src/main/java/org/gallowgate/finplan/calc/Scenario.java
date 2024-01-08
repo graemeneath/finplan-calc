@@ -1,8 +1,8 @@
 package org.gallowgate.finplan.calc;
 
+import org.json.JSONObject;
+
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Scenario {
     // constructor
@@ -53,8 +53,10 @@ public class Scenario {
     }
 
     private void displayResults(Aggregator aggregator) {
-        List<ArrayList<String>> rows = aggregator.aggregate();
-        for (ArrayList<String> row : rows) {
+        aggregator.aggregate();
+        JSONObject jresult = aggregator.getResult();
+        System.out.println(jresult.get("headers"));
+        for(Object row : jresult.getJSONArray("rows")) {
             System.out.println(row);
         }
     }

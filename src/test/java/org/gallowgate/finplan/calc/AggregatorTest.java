@@ -1,10 +1,9 @@
 package org.gallowgate.finplan.calc;
 
+import org.json.JSONObject;
 import org.junit.Test;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -56,9 +55,10 @@ public class AggregatorTest {
     @Test
     public void expectedResultDimensions() {
         Aggregator aggregator = testSetup1();
-        List<ArrayList<String>> rows = aggregator.aggregate();
+        aggregator.aggregate();
+        JSONObject rows = aggregator.getResult();
 
-        assertEquals(31, rows.size());
-        assertEquals(5, rows.get(0).size());
+        assertEquals(30, rows.getJSONArray("rows").length());
+        assertEquals(5, rows.getJSONArray("headers").length());
     }
 }
