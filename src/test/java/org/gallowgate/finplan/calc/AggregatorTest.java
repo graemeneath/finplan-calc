@@ -11,6 +11,11 @@ public class AggregatorTest {
 
     private Aggregator testSetup1() {
         Aggregator aggregator = new Aggregator();
+
+        aggregator.setPerson(Person.create("Test", LocalDate.of(1970, 1,1)));
+        aggregator.setMaxAge(85);
+        aggregator.setWithdrawal(new Withdrawal(30000).addOverride(75, 25000));
+
         aggregator.addEvent(new Event()
                 .setName("ISA")
                 .setAmount(171000)
@@ -58,7 +63,7 @@ public class AggregatorTest {
         aggregator.aggregate();
         JSONObject rows = aggregator.getResult();
 
-        assertEquals(30, rows.getJSONArray("rows").length());
+        assertEquals(33, rows.getJSONArray("rows").length());
         assertEquals(5, rows.getJSONArray("headers").length());
     }
 }
